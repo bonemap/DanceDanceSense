@@ -49,7 +49,7 @@ void sendOSCData(float value, const char *tag) {
 
 // setup configures the underlying hardware for use in the main loop.
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
 
   // Prevent need for powercyle after upload.
   WiFi.disconnect();
@@ -78,17 +78,16 @@ void setup() {
 void loop() {
   int x,y,z;
   adxl.readAccel(&x, &y, &z);
+  char tag[8];
 
-  char tag[16];
-
-  sprintf(tag, "/dds-x-%u", sensorId);
+  sprintf(tag, "dds-x-%u", sensorId);
   sendOSCData((x / 512.0), tag);
 
-  sprintf(tag, "/dds-y-%u", sensorId);
+  sprintf(tag, "dds-y-%u", sensorId);
   sendOSCData((y / 512.0), tag);
 
-  sprintf(tag, "/dds-z-%u", sensorId);
+  sprintf(tag, "dds-z-%u", sensorId);
   sendOSCData((z / 512.0), tag);
 
-  delay(250); // Sample and broadcast OSC messages four times a second.
+  delay(40); // Sample and broadcast OSC messages twentyfive times a second.
 }
